@@ -13,8 +13,8 @@ logging.basicConfig(filename="log",
                     level=logging.DEBUG)
 
 try:
-    serialPort = serial.Serial(
-        port=f'/dev/ttyUSB{sys.argv[1]}', baudrate=115200)
+    serialPort = serial.Serial('/dev/ttyUSB1', 115200)
+ #       port=f'/dev/ttyUSB{sys.argv[1]}', baudrate=115200)
 except serial.SerialException as e:
     logging.error(e)
     print(e)
