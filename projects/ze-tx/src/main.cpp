@@ -65,6 +65,12 @@
 
 /*================================ typedef ==================================*/
 
+typedef struct {
+  uint16_t temperature;
+  uint16_t humidity;
+  uint16_t pressure;
+  uint16_t light;
+} SensorData;
 /*=============================== prototypes ================================*/
 
 extern "C" void board_sleep(TickType_t xModifiableIdleTime);
@@ -73,7 +79,7 @@ extern "C" void board_wakeup(TickType_t xModifiableIdleTime);
 static void prvHeartbeatTask(void *pvParameters);
 static void prvTransmitTask(void *pvParameters);
 
-static uint16_t prepare_packet(uint8_t *packet_ptr, uint32_t packet_counter, uint8_t tx_mode, uint8_t tx_counter, uint8_t csma_retries, int8_t csma_rssi);
+static uint16_t prepare_packet(uint8_t *packet_ptr, uint8_t* eui48_address, uint32_t packet_counter, uint8_t tx_mode, uint8_t tx_counter, uint8_t csma_retries, int8_t csma_rssi, SensorData sensor_data);
 
 static void radio_tx_init(void);
 static void radio_tx_done(void);
@@ -82,6 +88,13 @@ static void radio_tx_done(void);
 
 static Task heartbeatTask{(const char *)"Heartbeat", 128, (unsigned char)HEARTBEAT_TASK_PRIORITY, prvHeartbeatTask, nullptr};
 static Task radioTask{(const char *)"Transmit", 128, (unsigned char)TRANSMIT_TASK_PRIORITY, prvTransmitTask, nullptr};
+
+static GpioConfig sensors_pwr_cfg = {SENSORS_CTRL_PORT, SENSORS_CTRL_PIN, 0, 0, 0};
+static GpioOut sensors_pwr_ctrl {sensors_pwr_cfg};
+
+static Bme280 bme280 {i2c, BME280_I2C_ADDRESS};
+static Opt3001 opt3001 {i2c, OPT3001_I2C_ADDRESS};
+
 
 static PlainCallback radio_tx_init_cb{&radio_tx_init};
 static PlainCallback radio_tx_done_cb{&radio_tx_done};
@@ -101,6 +114,12 @@ int main(void) {
 
   /* Enable the SPI interface */
   spi0.enable(SPI_BAUDRATE);
+  
+  /* Enable the I2C interface */
+  i2c.enable();
+  
+  /* Turn on the sensors board */
+  sensors_pwr_ctrl.high();
 
   /* Start the scheduler */
   Scheduler::run();
@@ -110,6 +129,7 @@ int main(void) {
 
 static void prvTransmitTask(void *pvParameters) {
   uint32_t packet_counter = 0;
+  bool status;
   uint8_t tx_mode = 0;
   uint8_t cycle = 0;
   int8_t cca_threshold = 0;
@@ -117,13 +137,62 @@ static void prvTransmitTask(void *pvParameters) {
   int8_t csma_rssi = 0;
   bool csma_check = false;
 
+  /* Get EUI48 address */
+  board.getEUI48(eui48_address);
+  
+  /* Initialize BME280 and OPT3001 sensors */
+  bme280.init();
+  opt3001.init();
+  opt3001.enable();
   /* Set radio callbacks and enable interrupts */
   at86rf215.setTxCallbacks(RADIO_CORE, &radio_tx_init_cb, &radio_tx_done_cb);
   at86rf215.enableInterrupts();
 
   /* Forever */
   while (true) {
+
+    SensorData sensor_data;
+    Bme280Data bme280_data;
+    Opt3001Data opt3001_data;
     uint16_t tx_buffer_len;
+	bool status;
+
+    /* Turn on red LED */
+    led_red.on();
+
+    /* Read temperature, humidity and pressure */
+    status = bme280.read(&bme280_data);
+    if (!status)
+    {
+      /* Reset BME280 */
+      bme280.reset();
+
+      /* Re-initialize BME280 */
+      bme280.init();
+    }
+
+    /* Read light */
+    status = opt3001.read(&opt3001_data.raw);
+    if (status)
+    {
+      opt3001.convert(opt3001_data.raw, &opt3001_data.lux);
+    }
+    
+    /* Turn off red LED */
+    led_red.off();
+
+    /* Convert sensor data */
+    if (status)
+    {
+      bool sent;
+      
+      /* Fill-in sensor data */
+      sensor_data.temperature = (uint16_t) (bme280_data.temperature * 10.0f);
+      sensor_data.humidity    = (uint16_t) (bme280_data.humidity * 10.0f);
+      sensor_data.pressure    = (uint16_t) (bme280_data.pressure * 10.0f);
+      sensor_data.light       = (uint16_t) (opt3001_data.lux * 10.0f);
+	}
+
 
     // Sensors delay
     Scheduler::delay_ms(100);
@@ -178,7 +247,7 @@ static void prvTransmitTask(void *pvParameters) {
         csma_check = at86rf215.csma(RADIO_CORE, cca_threshold, &csma_retries, &csma_rssi);
 
         /* Prepare radio packet */
-        tx_buffer_len = prepare_packet(radio_buffer, packet_counter, tx_mode, cycle, csma_retries, csma_rssi);
+        tx_buffer_len = prepare_packet(radio_buffer, eui48_address, packet_counter, tx_mode, cycle, csma_retries, csma_rssi, sensor_data);
 
         /* Load packet to radio */
         at86rf215.loadPacket(RADIO_CORE, radio_buffer, tx_buffer_len);
@@ -257,15 +326,12 @@ void board_wakeup(TickType_t xModifiableIdleTime) {
   }
 }
 
-static uint16_t prepare_packet(uint8_t *packet_ptr, uint32_t packet_counter, uint8_t tx_mode, uint8_t tx_counter, uint8_t csma_retries, int8_t csma_rssi) {
+static uint16_t prepare_packet(uint8_t *packet_ptr, uint8_t* eui48_address, uint32_t packet_counter, uint8_t tx_mode, uint8_t tx_counter, uint8_t csma_retries, int8_t csma_rssi, SensorData sensor_data) {
   uint16_t packet_length = 0;
 
-  // Signaling byte
-  packet_ptr[0] = 73;
-
   /* Copy MAC address */
-  for (packet_length = 1; packet_length < EUI48_ADDDRESS_LENGTH + 1; packet_length++) {
-    packet_ptr[packet_length] = 'a';
+  for (packet_length = 0; packet_length < EUI48_ADDDRESS_LENGTH; packet_length++) {
+    packet_ptr[packet_length] = eui48_address[packet_length];
   }
 
   /* Copy packet counter */
@@ -281,15 +347,20 @@ static uint16_t prepare_packet(uint8_t *packet_ptr, uint32_t packet_counter, uin
   // CSMA info
   packet_ptr[packet_length++] = csma_retries;
   packet_ptr[packet_length++] = csma_rssi;
+  
+  
+/* Copy sensor data */
+  packet_ptr[packet_length++] = (uint8_t) ((sensor_data.temperature & 0xFF00) >> 8);
+  packet_ptr[packet_length++] = (uint8_t) ((sensor_data.temperature & 0x00FF) >> 0);
+  packet_ptr[packet_length++] = (uint8_t) ((sensor_data.humidity & 0xFF00) >> 8);
+  packet_ptr[packet_length++] = (uint8_t) ((sensor_data.humidity & 0x00FF) >> 0);
+  packet_ptr[packet_length++] = (uint8_t) ((sensor_data.pressure & 0xFF00) >> 8);
+  packet_ptr[packet_length++] = (uint8_t) ((sensor_data.pressure & 0x00FF) >> 0);
+  packet_ptr[packet_length++] = (uint8_t) ((sensor_data.light & 0xFF00) >> 8);
+  packet_ptr[packet_length++] = (uint8_t) ((sensor_data.light & 0x00FF) >> 0);
+
 
   // Fill 32 bytes
-  packet_ptr[packet_length++] = 0; // 16;
-  packet_ptr[packet_length++] = 0; // 17;
-  packet_ptr[packet_length++] = 0; // 18;
-  packet_ptr[packet_length++] = 0; // 19;
-  packet_ptr[packet_length++] = 0; // 20;
-  packet_ptr[packet_length++] = 0; // 21;
-  packet_ptr[packet_length++] = 0; // 22;
   packet_ptr[packet_length++] = 0; // 23;
   packet_ptr[packet_length++] = 0; // 24;
   packet_ptr[packet_length++] = 0; // 25;
