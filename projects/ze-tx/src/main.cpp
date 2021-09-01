@@ -129,7 +129,7 @@ int main(void) {
 
 static void prvTransmitTask(void *pvParameters) {
   uint32_t packet_counter = 0;
-  bool status;
+//  bool status;
   uint8_t tx_mode = 0;
   uint8_t cycle = 0;
   int8_t cca_threshold = 0;
@@ -144,6 +144,7 @@ static void prvTransmitTask(void *pvParameters) {
   bme280.init();
   opt3001.init();
   opt3001.enable();
+  
   /* Set radio callbacks and enable interrupts */
   at86rf215.setTxCallbacks(RADIO_CORE, &radio_tx_init_cb, &radio_tx_done_cb);
   at86rf215.enableInterrupts();
@@ -184,8 +185,6 @@ static void prvTransmitTask(void *pvParameters) {
     /* Convert sensor data */
     if (status)
     {
-      bool sent;
-      
       /* Fill-in sensor data */
       sensor_data.temperature = (uint16_t) (bme280_data.temperature * 10.0f);
       sensor_data.humidity    = (uint16_t) (bme280_data.humidity * 10.0f);
