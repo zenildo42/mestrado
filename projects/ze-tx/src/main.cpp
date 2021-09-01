@@ -173,10 +173,10 @@ static void prvTransmitTask(void *pvParameters) {
     }
 
     /* Read light */
-    status = opt3001.read(&opt3001_data.raw);
+    status = opt3001.read(&opt3001_data);
     if (status)
     {
-      opt3001.convert(opt3001_data.raw, &opt3001_data.lux);
+      opt3001.convert(opt3001_data, &opt3001_data.lux);
     }
     
     /* Turn off red LED */
