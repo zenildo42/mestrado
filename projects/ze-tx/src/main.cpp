@@ -154,7 +154,7 @@ static void prvTransmitTask(void *pvParameters) {
 
     SensorData sensor_data;
     Bme280Data bme280_data;
-    Opt3001Data opt3001_data;
+//    Opt3001Data opt3001_data;
     uint16_t tx_buffer_len;
 	bool status;
 
