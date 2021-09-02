@@ -173,12 +173,12 @@ static void prvTransmitTask(void *pvParameters) {
     }
 
     /* Read light */
-    status = opt3001.read(&opt3001_data);
+/*    status = opt3001.read(&opt3001_data);
     if (status)
     {
       opt3001.convert(opt3001_data.raw, &opt3001_data.lux);
     }
-    
+  */  
     /* Turn off red LED */
     led_red.off();
 
@@ -189,7 +189,7 @@ static void prvTransmitTask(void *pvParameters) {
       sensor_data.temperature = (uint16_t) (bme280_data.temperature * 10.0f);
       sensor_data.humidity    = (uint16_t) (bme280_data.humidity * 10.0f);
       sensor_data.pressure    = (uint16_t) (bme280_data.pressure * 10.0f);
-      sensor_data.light       = (uint16_t) (opt3001_data.lux * 10.0f);
+      sensor_data.light       = 0; //(uint16_t) (opt3001_data.lux * 10.0f);
 	}
 
 
