@@ -15,7 +15,7 @@
 
 #define configMINIMAL_STACK_SIZE              ( ( uint16_t ) 128 )
 #define configMAX_TASK_NAME_LEN               ( 12 )
-#define configTOTAL_HEAP_SIZE                 ( ( size_t ) ( 4 * 1024 ) )
+#define configTOTAL_HEAP_SIZE                 ( ( size_t ) ( 3 * 1024 ) )
 
 #define configUSE_TICKLESS_IDLE               ( 0 )
 #if (configUSE_TICKLESS_IDLE == 0)
@@ -25,7 +25,7 @@
 #else
   #define configPRE_SLEEP_PROCESSING(x)       ( board_sleep(x) ) 
   #define configPOST_SLEEP_PROCESSING(x)      ( board_wakeup(x) )
-  #define configEXPECTED_IDLE_TIME_BEFORE_SLEEP ( 2 )
+  #define configEXPECTED_IDLE_TIME_BEFORE_SLEEP ( 1 )
 #endif
 
 /* Constants that build features in or out. */
