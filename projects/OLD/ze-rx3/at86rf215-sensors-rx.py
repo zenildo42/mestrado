@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 '''
 @file       at86rf215-ping-pong.py
@@ -50,8 +50,8 @@ def program(port = None, baudrate = None):
     serial.start()
 
     # Create MQTT client
-    mqtt = MqttClient.MqttClient(mqtt_address, mqtt_port)
-    mqtt.start()
+#    mqtt = MqttClient.MqttClient(mqtt_address, mqtt_port)
+#    mqtt.start()
 
     print("Starting program at port {} with bauds {}.".format(port, baudrate))
 
@@ -75,10 +75,10 @@ def program(port = None, baudrate = None):
 
             try:
                 # Create MQTT message
-                mqtt_message = json.dumps({"address": eui48, "counter": counter, "temp": t, "humidity": h, "pressure": p, "rssi": rssi})
+#                mqtt_message = json.dumps({"address": eui48, "counter": counter, "temp": t, "humidity": h, "pressure": p, "rssi": rssi})
 
                 # Send MQTT message
-                mqtt.send_message(mqtt_topic, mqtt_message)
+#                mqtt.send_message(mqtt_topic, mqtt_message)
             except:
                 logger.error("program: Error sending MQTT packet.")
             

@@ -4,7 +4,7 @@ Import('env')
 
 localEnv = env.Clone()
 
-project   = 'freertos-cc2538'
+project = 'experiment-tx'
 extension = '.elf'
 
 target = project + extension
@@ -13,10 +13,10 @@ source = [
 ]
 
 main = localEnv.Program(
-    target = target,
-    source = source,
-    LIBS = env['lib_name'],
-    LIBPATH = env['lib_path']
+    target=target,
+    source=source,
+    LIBS=env['lib_name'],
+    LIBPATH=env['lib_path']
 )
 
 Return('main')
