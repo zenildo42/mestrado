@@ -24,7 +24,7 @@ except serial.SerialException as e:
 def storeData(serialMessage : bytes):
 
  #    eui48, counter, txMode, txCounter, csma_retries, csma_rssi = struct.unpack(
-    eui48 = struct.unpack(">6s", serialMessage[1:7])
+    eui48, counter = struct.unpack(">6sI", serialMessage[1:11])
 #    rssi, _ = struct.unpack(">bb", message[33:35])
 
     data = [
@@ -35,7 +35,7 @@ def storeData(serialMessage : bytes):
                 "location": sys.argv[2]
             },
             "fields": {
-           #     "counter": counter,
+                "counter": counter
            #     "txMode": txMode,
            #     "txCounter": txCounter,
           #      "rssi": rssi,

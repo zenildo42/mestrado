@@ -73,7 +73,7 @@ extern "C" void board_wakeup(TickType_t xModifiableIdleTime);
 static void prvHeartbeatTask(void *pvParameters);
 static void prvTransmitTask(void *pvParameters);
 
-static uint16_t prepare_packet(uint8_t *packet_ptr, uint8_t* eui48_address);
+static uint16_t prepare_packet(uint8_t *packet_ptr, uint8_t* eui48_address, uint32_t packet_counter);
 
 static void radio_tx_init(void);
 static void radio_tx_done(void);
@@ -181,7 +181,7 @@ static void prvTransmitTask(void *pvParameters) {
         csma_check = at86rf215.csma(RADIO_CORE, cca_threshold, &csma_retries, &csma_rssi);
 
         /* Prepare radio packet */
-        tx_buffer_len = prepare_packet(radio_buffer, eui48_address);
+        tx_buffer_len = prepare_packet(radio_buffer, eui48_address, packet_counter);
 
         /* Load packet to radio */
         at86rf215.loadPacket(RADIO_CORE, radio_buffer, tx_buffer_len);
@@ -260,7 +260,7 @@ void board_wakeup(TickType_t xModifiableIdleTime) {
   }
 }
 
-static uint16_t prepare_packet(uint8_t *packet_ptr, uint8_t* eui48_address) {
+static uint16_t prepare_packet(uint8_t *packet_ptr, uint8_t* eui48_address, uint32_t packet_counter) {
   uint16_t packet_length = 0;
 
  /* Copy MAC address */
@@ -270,11 +270,11 @@ static uint16_t prepare_packet(uint8_t *packet_ptr, uint8_t* eui48_address) {
 
 
   /* Copy packet counter */
-/*  packet_ptr[packet_length++] = (uint8_t)((packet_counter & 0xFF000000) >> 24);
+  packet_ptr[packet_length++] = (uint8_t)((packet_counter & 0xFF000000) >> 24);
   packet_ptr[packet_length++] = (uint8_t)((packet_counter & 0x00FF0000) >> 16);
   packet_ptr[packet_length++] = (uint8_t)((packet_counter & 0x0000FF00) >> 8);
   packet_ptr[packet_length++] = (uint8_t)((packet_counter & 0x000000FF) >> 0);
-
+/*
   // Tx info
   packet_ptr[packet_length++] = tx_mode;
   packet_ptr[packet_length++] = tx_counter;
