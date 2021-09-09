@@ -147,6 +147,19 @@ static void prvTransmitTask(void *pvParameters) {
 
   /* Forever */
   while (true) {
+	/* Debug 01*/  
+	for (ze = 0; ze < 10; ze++)
+	{
+		/* Turn on green LED for 10 ms */
+		led_green.on();
+		Scheduler::delay_ms(10);
+    
+		/* Turn off green LED for 990 ms */
+		led_green.off();
+		Scheduler::delay_ms(990);
+	}
+	/* FIM Debug 01*/
+	
 	SensorData sensor_data;
     Bme280Data bme280_data;
     uint16_t tx_buffer_len;
