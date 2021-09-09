@@ -59,3 +59,4 @@
 01-09-2021|17:26:30,312 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
 01-09-2021|17:26:30,760 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
 01-09-2021|17:26:31,320 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
+09-09-2021|15:10:31,673 root ERROR [Errno 2] could not open port /dev/ttyUSB1: [Errno 2] No such file or directory: '/dev/ttyUSB1'

@@ -13,8 +13,8 @@ logging.basicConfig(filename="log",
                     level=logging.DEBUG)
 
 try:
-    serialPort = serial.Serial(#'/dev/ttyUSB0', 115200)
-        port=f'/dev/ttyUSB{sys.argv[1]}', baudrate=115200)
+    serialPort = serial.Serial(#'/dev/ttyUSB1', 115200)
+		port=f'/dev/ttyUSB{sys.argv[1]}', baudrate=115200)
 except serial.SerialException as e:
     logging.error(e)
     print(e)
@@ -23,9 +23,9 @@ except serial.SerialException as e:
 
 def storeData(serialMessage : bytes):
 
-    eui48, counter, txMode, txCounter, csma_retries, csma_rssi = struct.unpack(
-        ">6sQbbBb", serialMessage[1:19])
-    rssi, _ = struct.unpack(">bb", message[33:35])
+ #    eui48, counter, txMode, txCounter, csma_retries, csma_rssi = struct.unpack(
+    eui48 = struct.unpack(">6s", serialMessage[1:7])
+#    rssi, _ = struct.unpack(">bb", message[33:35])
 
     data = [
         {
@@ -35,12 +35,12 @@ def storeData(serialMessage : bytes):
                 "location": sys.argv[2]
             },
             "fields": {
-                "counter": counter,
-                "txMode": txMode,
-                "txCounter": txCounter,
-                "rssi": rssi,
-                "csma_retries": csma_retries,
-                "csma_rssi": csma_rssi
+           #     "counter": counter,
+           #     "txMode": txMode,
+           #     "txCounter": txCounter,
+          #      "rssi": rssi,
+           #     "csma_retries": csma_retries,
+            #    "csma_rssi": csma_rssi
             }
         }
     ]
