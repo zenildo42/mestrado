@@ -130,6 +130,7 @@ static void prvTransmitTask(void *pvParameters) {
   uint32_t packet_counter = 0;
   uint8_t tx_mode = 0;
   uint8_t cycle = 0;
+  uint8_t ze = 0;
   int8_t cca_threshold = 0;
   uint8_t csma_retries = 0;
   int8_t csma_rssi = 0;
