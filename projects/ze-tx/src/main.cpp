@@ -69,7 +69,6 @@ typedef struct {
   uint16_t temperature;
   uint16_t humidity;
   uint16_t pressure;
-  uint16_t light;
 } SensorData;
 
 /*=============================== prototypes ================================*/
@@ -139,11 +138,8 @@ static void prvTransmitTask(void *pvParameters) {
  /* Get EUI48 address */
   board.getEUI48(eui48_address);
 
-  /* Initialize BME280 and OPT3001 sensors */
+  /* Initialize BME280 sensors */
   bme280.init();
-  opt3001.init();
-  opt3001.enable();
-  
   
   /* Set radio callbacks and enable interrupts */
   at86rf215.setTxCallbacks(RADIO_CORE, &radio_tx_init_cb, &radio_tx_done_cb);
@@ -153,7 +149,6 @@ static void prvTransmitTask(void *pvParameters) {
   while (true) {
 	SensorData sensor_data;
     Bme280Data bme280_data;
-    Opt3001Data opt3001_data;
     uint16_t tx_buffer_len;
 	bool status;
 	
@@ -171,13 +166,6 @@ static void prvTransmitTask(void *pvParameters) {
       bme280.init();
     }
 
-    /* Read light */
-/*    status = opt3001.read(&opt3001_data.raw);
-    if (status)
-    {
-      opt3001.convert(opt3001_data.raw, &opt3001_data.lux);
-    }
-*/    
     /* Turn off red LED */
     led_red.off();
 
@@ -190,7 +178,6 @@ static void prvTransmitTask(void *pvParameters) {
       sensor_data.temperature = (uint16_t) (bme280_data.temperature * 10.0f);
       sensor_data.humidity    = (uint16_t) (bme280_data.humidity * 10.0f);
       sensor_data.pressure    = (uint16_t) (bme280_data.pressure * 10.0f);
-      sensor_data.light       = (uint16_t) (opt3001_data.lux * 10.0f);
     }
 
     // Sensors delay
@@ -347,8 +334,6 @@ static uint16_t prepare_packet(uint8_t *packet_ptr, uint8_t* eui48_address, uint
   packet_ptr[packet_length++] = (uint8_t) ((sensor_data.humidity & 0x00FF) >> 0);
   packet_ptr[packet_length++] = (uint8_t) ((sensor_data.pressure & 0xFF00) >> 8);
   packet_ptr[packet_length++] = (uint8_t) ((sensor_data.pressure & 0x00FF) >> 0);
-  packet_ptr[packet_length++] = (uint8_t) ((sensor_data.light & 0xFF00) >> 8);
-  packet_ptr[packet_length++] = (uint8_t) ((sensor_data.light & 0x00FF) >> 0);
 
 
   return packet_length;
