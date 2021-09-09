@@ -117,7 +117,7 @@ int main(void) {
   i2c.enable();
   
   /* Turn on the sensors board */
-  sensors_pwr_ctrl.high();
+ // sensors_pwr_ctrl.high();
 
 
   /* Start the scheduler */
