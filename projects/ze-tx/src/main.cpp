@@ -38,7 +38,7 @@
 #define HEARTBEAT_TASK_STACK_SIZE (128)
 #define TRANSMIT_TASK_STACK_SIZE (1024)
 
-#define SPI_BAUDRATE (8000000)
+#define SPI_BAUDRATE (16000000)
 
 #define TX_BUFFER_LENGTH (127)
 #define EUI48_ADDDRESS_LENGTH (6)
@@ -117,7 +117,7 @@ int main(void) {
   i2c.enable();
   
   /* Turn on the sensors board */
- // sensors_pwr_ctrl.high();
+  sensors_pwr_ctrl.high();
 
 
   /* Start the scheduler */
@@ -130,7 +130,6 @@ static void prvTransmitTask(void *pvParameters) {
   uint32_t packet_counter = 0;
   uint8_t tx_mode = 0;
   uint8_t cycle = 0;
-  uint8_t ze = 0;
   int8_t cca_threshold = 0;
   uint8_t csma_retries = 0;
   int8_t csma_rssi = 0;
@@ -140,7 +139,7 @@ static void prvTransmitTask(void *pvParameters) {
   board.getEUI48(eui48_address);
 
   /* Initialize BME280 sensors */
-  bme280.init();
+ // bme280.init();
   
   /* Set radio callbacks and enable interrupts */
   at86rf215.setTxCallbacks(RADIO_CORE, &radio_tx_init_cb, &radio_tx_done_cb);
@@ -148,38 +147,25 @@ static void prvTransmitTask(void *pvParameters) {
 
   /* Forever */
   while (true) {
-	/* Debug 01*/  
-	for (ze = 0; ze < 10; ze++)
-	{
-		/* Turn on green LED for 10 ms */
-		led_green.on();
-		Scheduler::delay_ms(10);
-    
-		/* Turn off green LED for 990 ms */
-		led_green.off();
-		Scheduler::delay_ms(990);
-	}
-	/* FIM Debug 01*/
-	
-	SensorData sensor_data;
+	  SensorData sensor_data;
     Bme280Data bme280_data;
     uint16_t tx_buffer_len;
-	bool status;
+	  bool status=true;
 	
-	/* Turn on red LED */
+	  /* Turn on red LED */
     led_red.on();
 
     /* Read temperature, humidity and pressure */
-    status = bme280.read(&bme280_data);
+/*    status = bme280.read(&bme280_data);
     if (!status)
     {
-      /* Reset BME280 */
+    //   Reset BME280 
       bme280.reset();
 
-      /* Re-initialize BME280 */
+      // Re-initialize BME280 
       bme280.init();
     }
-
+*/
     /* Turn off red LED */
     led_red.off();
 
@@ -189,17 +175,20 @@ static void prvTransmitTask(void *pvParameters) {
       bool sent;
       
       /* Fill-in sensor data */
-      sensor_data.temperature = (uint16_t) (bme280_data.temperature * 10.0f);
+      sensor_data.temperature = (uint16_t) (0 * 10.0f);
+      sensor_data.humidity    = (uint16_t) (0 * 10.0f);
+      sensor_data.pressure    = (uint16_t) (0 * 10.0f);
+
+/*      sensor_data.temperature = (uint16_t) (bme280_data.temperature * 10.0f);
       sensor_data.humidity    = (uint16_t) (bme280_data.humidity * 10.0f);
       sensor_data.pressure    = (uint16_t) (bme280_data.pressure * 10.0f);
-    }
+*/
+    
 
-    // Sensors delay
-    Scheduler::delay_ms(100);
+      // Sensors delay
+      Scheduler::delay_ms(100);
 
-    bool sent;
-
-    for (cycle = 0; cycle < 3; cycle++) {
+      for (cycle = 0; cycle < 3; cycle++) {
 
       if (cycle == 1) {
         Scheduler::delay_ms(100);
@@ -267,6 +256,7 @@ static void prvTransmitTask(void *pvParameters) {
       }
     }
 
+    }
     /* Increment packet counter */
     packet_counter++;
 
