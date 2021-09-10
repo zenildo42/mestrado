@@ -139,7 +139,9 @@ static void prvTransmitTask(void *pvParameters) {
   board.getEUI48(eui48_address);
 
   /* Initialize BME280 sensors */
- // bme280.init();
+  if (!bme280.init()){
+	  led_green.on();
+  }
   
   /* Set radio callbacks and enable interrupts */
   at86rf215.setTxCallbacks(RADIO_CORE, &radio_tx_init_cb, &radio_tx_done_cb);
