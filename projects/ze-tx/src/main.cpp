@@ -140,7 +140,7 @@ static void prvTransmitTask(void *pvParameters) {
 
   /* Initialize BME280 sensors */
   if (!bme280.init()){
-	  led_green.on();
+	  led_red.on();
   }
   
   /* Set radio callbacks and enable interrupts */
