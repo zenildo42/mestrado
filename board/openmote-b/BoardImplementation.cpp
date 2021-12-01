@@ -216,7 +216,7 @@
 #define SPI1_CLK_IOC            ( IOC_MUX_OUT_SEL_SSI1_CLKOUT )
 
 #define I2C_PERIPHERAL          ( SYS_CTRL_PERIPH_I2C )
-#define I2C_BAUDRATE            ( 400000 )
+#define I2C_BAUDRATE            ( 200000 )
 #define I2C_SCL_BASE            ( GPIO_B_BASE )
 #define I2C_SCL_PIN             ( GPIO_PIN_1 )
 #define I2C_SDA_BASE            ( GPIO_B_BASE )
@@ -251,12 +251,13 @@ static const GpioConfig led_red_cfg    {LED_RED_PORT,    LED_RED_PIN,    0, 0, 1
 static const GpioConfig led_yellow_cfg {LED_YELLOW_PORT, LED_YELLOW_PIN, 0, 0, 1};
 
 /* Debug pins */ 
-static const GpioConfig debug0_cfg {DEBUG0_PORT, DEBUG0_PIN, 0, 0, 0};
+/*static const GpioConfig debug0_cfg {DEBUG0_PORT, DEBUG0_PIN, 0, 0, 0};
 static const GpioConfig debug1_cfg {DEBUG1_PORT, DEBUG1_PIN, 0, 0, 0};
 static const GpioConfig debug2_cfg {DEBUG2_PORT, DEBUG2_PIN, 0, 0, 0};
 static const GpioConfig debug3_cfg {DEBUG3_PORT, DEBUG3_PIN, 0, 0, 0};
 static const GpioConfig debug4_cfg {DEBUG4_PORT, DEBUG4_PIN, 0, 0, 0};
 static const GpioConfig debug5_cfg {DEBUG4_PORT, DEBUG5_PIN, 0, 0, 0};
+*/
 
 /* Buttons */
 static const GpioConfig button_user_cfg {BUTTON_USER_PORT, BUTTON_USER_PIN, 0, BUTTON_USER_EDGE, 0};

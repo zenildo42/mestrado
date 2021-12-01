@@ -139,7 +139,7 @@ static void prvTransmitTask(void *pvParameters) {
   board.getEUI48(eui48_address);
 
   /* Initialize BME280 sensors */
-  //bme280.init();
+  bme280.init();
   
   /* Set radio callbacks and enable interrupts */
   at86rf215.setTxCallbacks(RADIO_CORE, &radio_tx_init_cb, &radio_tx_done_cb);
@@ -147,13 +147,13 @@ static void prvTransmitTask(void *pvParameters) {
 
   /* Forever */
   while (true) {
-	  SensorData sensor_data;
-    Bme280Data bme280_data;
-    uint16_t tx_buffer_len;
-	  bool status=true;
+   SensorData sensor_data;
+   Bme280Data bme280_data;
+   uint16_t tx_buffer_len;
+   bool status=true;
 	
 	  /* Turn on red LED */
-    led_red.on();
+   led_red.on();
 
     /* Read temperature, humidity and pressure */
 /*    status = bme280.read(&bme280_data);
