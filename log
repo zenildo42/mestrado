@@ -3428,3 +3428,29 @@
 03-02-2022|03:45:58,481 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
 03-02-2022|03:45:58,776 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
 03-02-2022|03:45:59,223 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
+17-02-2022|17:58:39,571 urllib3.connectionpool DEBUG Starting new HTTP connection (1): 127.0.0.1:8086
+17-02-2022|17:58:39,573 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 404 43
+17-02-2022|17:58:39,573 root ERROR 404: {"error":"database not found: \"openmoteTest\""}
+17-02-2022|17:58:39,859 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 404 43
+17-02-2022|17:58:39,860 root ERROR 404: {"error":"database not found: \"openmoteTest\""}
+17-02-2022|17:58:40,259 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 404 43
+17-02-2022|17:58:40,260 root ERROR 404: {"error":"database not found: \"openmoteTest\""}
+17-02-2022|18:00:49,296 urllib3.connectionpool DEBUG Starting new HTTP connection (1): 127.0.0.1:8086
+17-02-2022|18:00:49,299 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 404 43
+17-02-2022|18:00:49,300 root ERROR 404: {"error":"database not found: \"openmoteTest\""}
+17-02-2022|18:00:49,598 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 404 43
+17-02-2022|18:00:49,599 root ERROR 404: {"error":"database not found: \"openmoteTest\""}
+17-02-2022|18:00:49,985 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 404 43
+17-02-2022|18:00:49,986 root ERROR 404: {"error":"database not found: \"openmoteTest\""}
+17-02-2022|18:07:29,686 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
+17-02-2022|18:07:29,952 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
+17-02-2022|18:07:30,352 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
+17-02-2022|18:08:28,897 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
+17-02-2022|18:08:29,200 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
+17-02-2022|18:08:29,583 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
+17-02-2022|18:09:28,140 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
+17-02-2022|18:09:28,428 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
+17-02-2022|18:09:28,827 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
+17-02-2022|18:10:27,372 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
+17-02-2022|18:10:27,658 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
+17-02-2022|18:10:28,58 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=openmoteTest HTTP/1.1" 204 0
