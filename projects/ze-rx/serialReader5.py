@@ -13,8 +13,8 @@ logging.basicConfig(filename="log",
                     level=logging.DEBUG)
 
 try:
-    serialPort = serial.Serial(#'/dev/ttyUSB1', 115200)
-		port=f'/dev/ttyUSB{sys.argv[1]}', baudrate=115200)
+    serialPort = serial.Serial('/dev/ttyUSB1', 115200)
+	#	port=f'/dev/ttyUSB{sys.argv[1]}', baudrate=115200)
 except serial.SerialException as e:
     logging.error(e)
     print(e)
@@ -32,7 +32,7 @@ def storeData(serialMessage : bytes):
 
     data = [
         {
-            "measurement": "transmissionData",
+            "measurement": "OQPSK04",
             "tags": {
                 "openmoteID": str(eui48),
                 "location": sys.argv[2]
@@ -48,7 +48,7 @@ def storeData(serialMessage : bytes):
 
     print(data)
 
-    #done = clientTest.write_points(data, protocol="json")
+    done = clientTest.write_points(data, protocol="json")
 
 
 clientTest = InfluxDBClient(
