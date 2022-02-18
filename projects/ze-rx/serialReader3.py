@@ -32,7 +32,7 @@ def storeData(serialMessage : bytes):
 
     data = [
         {
-            "measurement": "FSK04",
+            "measurement": "FSK",
             "tags": {
                 "openmoteID": str(eui48),
                 "location": sys.argv[2]

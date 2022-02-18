@@ -32,7 +32,7 @@ def storeData(serialMessage : bytes):
 
     data = [
         {
-            "measurement": "OFDM04",
+            "measurement": "OFDM",
             "tags": {
                 "openmoteID": str(eui48),
                 "location": sys.argv[2]
