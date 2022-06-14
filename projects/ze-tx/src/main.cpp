@@ -80,7 +80,7 @@ extern "C" void board_wakeup(TickType_t xModifiableIdleTime);
 static void prvHeartbeatTask(void *pvParameters);
 static void prvTransmitTask(void *pvParameters);
 
-static uint16_t prepare_packet(uint8_t *packet_ptr, uint8_t *eui48_address, uint32_t packet_counter, SensorData sensor_data, uint8_t tx_mode, uint8_t tx_counter, uint8_t csma_retries, int8_t csma_rssi);
+static uint32_t prepare_packet(uint8_t *packet_ptr, uint8_t *eui48_address, uint32_t packet_counter, SensorData sensor_data, uint8_t tx_mode, uint8_t tx_counter, uint8_t csma_retries, int8_t csma_rssi);
 
 static void radio_tx_init(void);
 static void radio_tx_done(void);
@@ -334,7 +334,7 @@ void board_wakeup(TickType_t xModifiableIdleTime)
   }
 }
 
-static uint16_t prepare_packet(uint8_t *packet_ptr, uint8_t *eui48_address, uint32_t packet_counter, SensorData sensor_data, uint8_t tx_mode, uint8_t tx_counter, uint8_t csma_retries, int8_t csma_rssi)
+static uint32_t prepare_packet(uint8_t *packet_ptr, uint8_t *eui48_address, uint32_t packet_counter, SensorData sensor_data, uint8_t tx_mode, uint8_t tx_counter, uint8_t csma_retries, int8_t csma_rssi)
 {
   uint16_t packet_length = 0;
 
