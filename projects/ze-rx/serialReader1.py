@@ -23,8 +23,8 @@ except serial.SerialException as e:
 def storeData(serialMessage : bytes):
 
  #    eui48, counter, txMode, txCounter, csma_retries, csma_rssi = struct.unpack(
-    eui48, counter, t, h, p, txMode, txCounter, csma_retries, csma_rssi  = struct.unpack(">6sIhhh", serialMessage[1:21])
-    rssi, _ = struct.unpack(">bb", message[33:35])
+    eui48, counter, t, h, p  = struct.unpack(">6sIhhh", serialMessage[1:17])
+ #   rssi, _ = struct.unpack(">bb", message[33:35])
     t = t/10.0
     h = h/10.0
     p = p/10.0
@@ -41,11 +41,6 @@ def storeData(serialMessage : bytes):
                 "Temperature": t,
                 "Humidity": h,
                 "Pressure": p,
-                "txMode": txMode,
-                "txCounter": txCounter,
-                "rssi": rssi,
-                "csma_retries": csma_retries,
-                "csma_rssi": csma_rssi
              }
         }
     ]

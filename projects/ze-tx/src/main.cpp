@@ -179,7 +179,7 @@ static void prvTransmitTask(void *pvParameters)
       bool sent;
 
       /* Fill-in sensor data */
-      sensor_data.temperature = (uint16_t)(0 * 10.0f);
+      sensor_data.temperature = (uint16_t)(((rand() % 3) + 22) * 10.0f);
       sensor_data.humidity = (uint16_t)(0 * 10.0f);
       sensor_data.pressure = (uint16_t)(0 * 10.0f);
 
