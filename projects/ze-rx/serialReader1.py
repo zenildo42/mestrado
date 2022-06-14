@@ -1,6 +1,6 @@
-from influxdb import InfluxDBClient
+#from influxdb import InfluxDBClient
 from datetime import datetime
-import influxdb
+#import influxdb
 import logging
 import struct
 import serial
