@@ -101,7 +101,7 @@ static PlainCallback radio_tx_done_cb{&radio_tx_done};
 
 static SemaphoreBinary semaphore{false};
 
-static uint32_t radio_buffer[TX_BUFFER_LENGTH];
+static uint8_t radio_buffer[TX_BUFFER_LENGTH];
 static uint8_t eui48_address[EUI48_ADDDRESS_LENGTH];
 
 static bool board_slept;
