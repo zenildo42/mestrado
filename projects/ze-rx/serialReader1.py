@@ -55,8 +55,8 @@ def storeData(serialMessage : bytes):
 #    done = clientTest.write_points(data, protocol="json")
 
 
-clientTest = InfluxDBClient(
-    host='127.0.0.1', port=8086, database='openmoteTest')
+#clientTest = InfluxDBClient(
+#    host='127.0.0.1', port=8086, database='openmoteTest')
 
 message = bytes(37)
 buffer = bytes(1)

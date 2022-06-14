@@ -63,7 +63,7 @@ static void prvRadioTask(void *pvParameters);
 static void radio_rx_init(void);
 static void radio_rx_done(void);
 
-static uint16_t prepare_serial(uint8_t *buffer_ptr, uint8_t *packet_ptr, uint16_t packet_length, int8_t lqi);
+static uint32_t prepare_serial(uint8_t *buffer_ptr, uint8_t *packet_ptr, uint16_t packet_length, int8_t lqi);
 
 /*=============================== variables =================================*/
 
@@ -84,7 +84,8 @@ static uint16_t radio_buffer_len = sizeof(radio_buffer);
 
 /*================================= public ==================================*/
 
-int main(void) {
+int main(void)
+{
   /* Initialize the board */
   board.init();
 
@@ -107,7 +108,8 @@ int main(void) {
 
 /*================================ private ==================================*/
 
-static void prvRadioTask(void *pvParameters) {
+static void prvRadioTask(void *pvParameters)
+{
   bool status;
 
   /* Turn AT86RF215 radio on */
@@ -115,7 +117,8 @@ static void prvRadioTask(void *pvParameters) {
 
   /* Check AT86RF215 radio */
   status = at86rf215.check();
-  if (!status) {
+  if (!status)
+  {
     /* Blink red LED */
     board.error();
   }
@@ -131,7 +134,8 @@ static void prvRadioTask(void *pvParameters) {
   at86rf215.setTransmitPower(RADIO_CORE, RADIO_TX_POWER);
 
   /* Forever */
-  while (true) {
+  while (true)
+  {
     At86rf215::RadioResult result;
     int8_t rssi, lqi;
     bool crc;
@@ -160,12 +164,14 @@ static void prvRadioTask(void *pvParameters) {
     received = semaphore.take();
 
     /* If we have received a packet */
-    if (received == true) {
+    if (received == true)
+    {
       /* Load packet to radio */
       result = at86rf215.getPacket(RADIO_CORE, packet_ptr, &packet_len, &rssi, &lqi, &crc);
 
       /* Check packet has been received successfully */
-      if (result == At86rf215::RadioResult::Success && crc == true) {
+      if (result == At86rf215::RadioResult::Success && crc == true)
+      {
         uint16_t length;
 
         /* Turn on yellow LED */
@@ -180,7 +186,9 @@ static void prvRadioTask(void *pvParameters) {
         /* Turn off yellow LED */
         led_yellow.off();
       }
-    } else {
+    }
+    else
+    {
       /* Blink red LED */
       led_red.on();
       Scheduler::delay_ms(1);
@@ -192,9 +200,11 @@ static void prvRadioTask(void *pvParameters) {
   at86rf215.off();
 }
 
-static void prvGreenLedTask(void *pvParameters) {
+static void prvGreenLedTask(void *pvParameters)
+{
   /* Forever */
-  while (true) {
+  while (true)
+  {
     /* Turn on green LED for 100 ms */
     led_green.on();
     Scheduler::delay_ms(100);
@@ -205,12 +215,14 @@ static void prvGreenLedTask(void *pvParameters) {
   }
 }
 
-static void radio_rx_init(void) {
+static void radio_rx_init(void)
+{
   /* Turn on orange LED */
   led_orange.on();
 }
 
-static void radio_rx_done(void) {
+static void radio_rx_done(void)
+{
   /* Turn off orange LED */
   led_orange.off();
 
@@ -218,7 +230,8 @@ static void radio_rx_done(void) {
   semaphore.giveFromInterrupt();
 }
 
-static uint16_t prepare_serial(uint8_t *buffer_ptr, uint8_t *packet_ptr, uint16_t packet_length, int8_t lqi) {
+static uint32_t prepare_serial(uint8_t *buffer_ptr, uint8_t *packet_ptr, uint16_t packet_length, int8_t lqi)
+{
   uint16_t length;
 
   /* Copy radio packet payload */
@@ -230,8 +243,8 @@ static uint16_t prepare_serial(uint8_t *buffer_ptr, uint8_t *packet_ptr, uint16_
   /* Copy RSSI value */
   buffer_ptr[length++] = lqi;
 
-/*  // Signaling byte
-  buffer_ptr[length++] = 105;
-*/
+  /*  // Signaling byte
+    buffer_ptr[length++] = 105;
+  */
   return length;
 }
