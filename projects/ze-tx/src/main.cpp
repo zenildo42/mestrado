@@ -29,6 +29,7 @@
 
 #include "Bme280.hpp"
 #include "Opt3001.hpp"
+#include <stdlib.h>
 
 /*================================ define ===================================*/
 
