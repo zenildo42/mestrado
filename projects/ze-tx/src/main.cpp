@@ -141,7 +141,7 @@ static void prvTransmitTask(void *pvParameters)
 
   /* Get EUI48 address */
   /* board.getEUI48(eui48_address);*/
-  eui48_address = '\\x00\\x12K\\xe0\\xba\\x01';
+  eui48_address = "\\x00\\x12K\\xe0\\xba\\x01";
 
   /* Initialize BME280 sensors */
   // bme280.init();
