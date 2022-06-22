@@ -1,6 +1,6 @@
-#from influxdb import InfluxDBClient
+from influxdb import InfluxDBClient
 from datetime import datetime
-#import influxdb
+import influxdb
 import logging
 import struct
 import serial
@@ -23,8 +23,8 @@ except serial.SerialException as e:
 def storeData(serialMessage : bytes):
 
  #    eui48, counter, txMode, txCounter, csma_retries, csma_rssi = struct.unpack(
-    eui48, counter, t, h, p  = struct.unpack(">6sIhhh", serialMessage[1:17])
- #   rssi, _ = struct.unpack(">bb", message[33:35])
+    eui48, counter, t, h, p, txMode, txCounter, csma_retries, csma_rssi, rssi = struct.unpack(">6sIhhhbbBbb", serialMessage[1:22])
+#    rssi, _ = struct.unpack(">bb", message[22:23])
     t = t/10.0
     h = h/10.0
     p = p/10.0
@@ -41,17 +41,24 @@ def storeData(serialMessage : bytes):
                 "Temperature": t,
                 "Humidity": h,
                 "Pressure": p,
+                "txMode": txMode,
+                "txCounter": txCounter,
+                "rssi": rssi,
+                "csma_retries": csma_retries,
+                "csma_rssi": csma_rssi
+
+   
              }
         }
     ]
 
     print(data)
 
-#    done = clientTest.write_points(data, protocol="json")
+    done = clientTest.write_points(data, protocol="json")
 
 
-#clientTest = InfluxDBClient(
-#    host='127.0.0.1', port=8086, database='openmoteTest')
+clientTest = InfluxDBClient(
+    host='127.0.0.1', port=8086, database='final')
 
 message = bytes(37)
 buffer = bytes(1)
