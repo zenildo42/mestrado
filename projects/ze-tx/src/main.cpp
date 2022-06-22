@@ -82,7 +82,7 @@ extern "C" void board_wakeup(TickType_t xModifiableIdleTime);
 static void prvHeartbeatTask(void *pvParameters);
 static void prvTransmitTask(void *pvParameters);
 
-static uint32_t prepare_packet(uint8_t *packet_ptr, uint32_t packet_counter, SensorData sensor_data, uint8_t tx_mode, uint8_t tx_counter, uint8_t csma_retries, int8_t csma_rssi);
+static uint32_t prepare_packet(uint8_t *packet_ptr, uint8_t *eui48_address, uint32_t packet_counter, SensorData sensor_data, uint8_t tx_mode, uint8_t tx_counter, uint8_t csma_retries, int8_t csma_rssi);
 
 static void radio_tx_init(void);
 static void radio_tx_done(void);
@@ -140,7 +140,7 @@ static void prvTransmitTask(void *pvParameters)
   bool csma_check = false;
 
   /* Get EUI48 address */
-  /* board.getEUI48(eui48_address);*/
+  board.getEUI48(eui48_address);
 
   /* Initialize BME280 sensors */
   // bme280.init();
@@ -249,7 +249,7 @@ static void prvTransmitTask(void *pvParameters)
           csma_check = at86rf215.csma(RADIO_CORE, cca_threshold, &csma_retries, &csma_rssi);
 
           /* Prepare radio packet */
-          tx_buffer_len = prepare_packet(radio_buffer, packet_counter, sensor_data, tx_mode, cycle, csma_retries, csma_rssi);
+          tx_buffer_len = prepare_packet(radio_buffer, eui48_address, packet_counter, sensor_data, tx_mode, cycle, csma_retries, csma_rssi);
 
           /* Load packet to radio */
           at86rf215.loadPacket(RADIO_CORE, radio_buffer, tx_buffer_len);
@@ -339,14 +339,14 @@ void board_wakeup(TickType_t xModifiableIdleTime)
   }
 }
 
-static uint32_t prepare_packet(uint8_t *packet_ptr, uint32_t packet_counter, SensorData sensor_data, uint8_t tx_mode, uint8_t tx_counter, uint8_t csma_retries, int8_t csma_rssi)
+static uint32_t prepare_packet(uint8_t *packet_ptr, uint8_t *eui48_address, uint32_t packet_counter, SensorData sensor_data, uint8_t tx_mode, uint8_t tx_counter, uint8_t csma_retries, int8_t csma_rssi)
 {
   uint16_t packet_length = 0;
 
   /* Copy MAC address */
-  for (packet_length = 0; packet_length < EUI48_ADDDRESS_LENGTH + 1; packet_length++)
+  for (packet_length = 0; packet_length < EUI48_ADDDRESS_LENGTH; packet_length++)
   {
-    packet_ptr[packet_length] = 'A';
+    packet_ptr[packet_length] = eui48_address[packet_length];
   }
 
   /* Copy packet counter */
