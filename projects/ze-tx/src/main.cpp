@@ -183,8 +183,8 @@ static void prvTransmitTask(void *pvParameters)
       deci = (rand() % 100);
 
       /* Fill-in sensor data */
-      sensor_data.temperature = (uint16_t)((23 * 100.0f) + deci);
-      sensor_data.humidity = (uint16_t)((63 * 100.0f) + deci);
+      sensor_data.temperature = (uint16_t)((24 * 100.0f) + deci);
+      sensor_data.humidity = (uint16_t)((64 * 100.0f) + deci);
       sensor_data.pressure = (uint16_t)(0 * 100.0f);
 
       /*      sensor_data.temperature = (uint16_t) (bme280_data.temperature * 10.0f);
