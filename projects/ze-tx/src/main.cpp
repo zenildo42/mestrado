@@ -43,6 +43,7 @@
 
 #define TX_BUFFER_LENGTH (127)
 #define EUI48_ADDDRESS_LENGTH (6)
+#define EUI48_ADDDRESS_LENGTH2 (6)
 
 #define SENSORS_CTRL_PORT (GPIO_A_BASE)
 #define SENSORS_CTRL_PIN (GPIO_PIN_7)
@@ -137,6 +138,7 @@ static void prvTransmitTask(void *pvParameters)
   uint8_t csma_retries = 0;
   int8_t csma_rssi = 0;
   bool csma_check = false;
+  EUI48_ADDDRESS_LENGTH2 = 'AAAAAA';
 
   /* Get EUI48 address */
   board.getEUI48(eui48_address);
@@ -343,9 +345,9 @@ static uint32_t prepare_packet(uint8_t *packet_ptr, uint8_t *eui48_address, uint
   uint16_t packet_length = 0;
 
   /* Copy MAC address */
-  for (packet_length = 0; packet_length < EUI48_ADDDRESS_LENGTH; packet_length++)
+  for (packet_length = 0; packet_length < EUI48_ADDDRESS_LENGTH2; packet_length++)
   {
-    packet_ptr[packet_length] = eui48_address[packet_length];
+    packet_ptr[packet_length] = EUI48_ADDDRESS_LENGTH2[packet_length];
   }
 
   /* Copy packet counter */
