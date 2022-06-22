@@ -180,7 +180,7 @@ static void prvTransmitTask(void *pvParameters)
       bool sent;
       float deci;
 
-      deci = (rand() % 100);
+      deci = (rand() % 10);
 
       /* Fill-in sensor data */
       sensor_data.temperature = (uint16_t)((21 * 10.0f) + deci);
