@@ -25,9 +25,9 @@ def storeData(serialMessage : bytes):
  #    eui48, counter, txMode, txCounter, csma_retries, csma_rssi = struct.unpack(
     eui48, counter, t, h, p, txMode, txCounter, csma_retries, csma_rssi, rssi = struct.unpack(">6sIhhhbbBbb", serialMessage[1:22])
 #    rssi, _ = struct.unpack(">bb", message[22:23])
-    t = t/10.0
-    h = h/10.0
-    p = p/10.0
+    t = t/100.0
+    h = h/100.0
+    p = p/100.0
 
     data = [
         {
