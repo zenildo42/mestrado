@@ -19357,3 +19357,16 @@
 22-06-2022|11:58:40,20 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=final HTTP/1.1" 204 0
 22-06-2022|11:58:40,324 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=final HTTP/1.1" 204 0
 22-06-2022|11:58:40,724 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=final HTTP/1.1" 204 0
+22-06-2022|12:10:30,237 urllib3.connectionpool DEBUG Starting new HTTP connection (1): 127.0.0.1:8086
+22-06-2022|12:10:30,250 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=final HTTP/1.1" 204 0
+22-06-2022|12:10:30,535 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=final HTTP/1.1" 204 0
+22-06-2022|12:10:30,935 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=final HTTP/1.1" 204 0
+22-06-2022|12:15:41,222 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=final HTTP/1.1" 204 0
+22-06-2022|12:15:41,509 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=final HTTP/1.1" 204 0
+22-06-2022|12:15:41,910 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=final HTTP/1.1" 204 0
+22-06-2022|12:16:40,453 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=final HTTP/1.1" 204 0
+22-06-2022|12:16:40,756 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=final HTTP/1.1" 204 0
+22-06-2022|12:16:41,157 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=final HTTP/1.1" 204 0
+22-06-2022|12:17:39,697 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=final HTTP/1.1" 204 0
+22-06-2022|12:17:40,0 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=final HTTP/1.1" 204 0
+22-06-2022|12:17:40,399 urllib3.connectionpool DEBUG http://127.0.0.1:8086 "POST /write?db=final HTTP/1.1" 204 0
