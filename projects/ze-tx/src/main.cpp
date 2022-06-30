@@ -29,7 +29,7 @@
 
 #include "Bme280.hpp"
 #include "Opt3001.hpp"
-#include <stdlib.h>
+// #include <stdlib.h>
 
 /*================================ define ===================================*/
 
@@ -179,13 +179,13 @@ static void prvTransmitTask(void *pvParameters)
     {
 
       bool sent;
-      float deci;
+      // float deci;
 
-      deci = (rand() % 100);
+      // deci = (rand() % 100);
 
       /* Fill-in sensor data */
-      sensor_data.temperature = (uint16_t)((24 * 100.0f) + deci);
-      sensor_data.humidity = (uint16_t)((64 * 100.0f) + deci);
+      sensor_data.temperature = (uint16_t)(24 * 100.0f);
+      sensor_data.humidity = (uint16_t)(64 * 100.0f);
       sensor_data.pressure = (uint16_t)(0 * 100.0f);
 
       /*      sensor_data.temperature = (uint16_t) (bme280_data.temperature * 10.0f);
